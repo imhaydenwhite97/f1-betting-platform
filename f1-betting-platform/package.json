@@ -1,5 +1,24 @@
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start"
+}
+
 {
+  "name": "f1-betting-platform",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
-    "next": "^15.2.4"
+    "next": "15.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    // other dependencies...
   }
 }
