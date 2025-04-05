@@ -1,33 +1,10 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
 
 export default function DashboardPage() {
-  const { user, profile, loading, signOut } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth');
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center bg-gray-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null; // Will redirect in useEffect
-  }
-
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -45,13 +22,13 @@ export default function DashboardPage() {
           </Link>
           
           <div className="flex items-center space-x-4">
-            <span className="hidden md:inline">Welcome, {profile?.username || user.email}</span>
-            <button 
-              onClick={signOut}
+            <span className="hidden md:inline">Welcome, User</span>
+            <Link 
+              href="/"
               className="bg-white text-red-600 px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-100"
             >
               Sign Out
-            </button>
+            </Link>
           </div>
         </div>
       </header>
