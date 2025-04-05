@@ -1,10 +1,51 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        router.push('/auth');
+        return;
+      }
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+      
+      setUser(profile);
+      setLoading(false);
+    };
+    
+    getUser();
+  }, [router]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push('/');
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -22,13 +63,13 @@ export default function DashboardPage() {
           </Link>
           
           <div className="flex items-center space-x-4">
-            <span className="hidden md:inline">Welcome, User</span>
-            <Link 
-              href="/"
+            <span className="hidden md:inline">Welcome, {user?.username || 'User'}</span>
+            <button 
+              onClick={handleSignOut}
               className="bg-white text-red-600 px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-100"
             >
               Sign Out
-            </Link>
+            </button>
           </div>
         </div>
       </header>
