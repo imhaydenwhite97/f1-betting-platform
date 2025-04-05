@@ -82,7 +82,7 @@ export default function DashboardPage() {
             
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h2 className="text-lg font-semibold mb-2">My Betting Groups</h2>
-              <p className="text-gray-500">You're not part of any betting groups yet.</p>
+              <p className="text-gray-500">You are not part of any betting groups yet.</p>
               <Link href="/protected/groups" className="text-red-600 hover:underline text-sm mt-2 inline-block">
                 Create a Group
               </Link>
@@ -91,7 +91,7 @@ export default function DashboardPage() {
           
           <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
             <h2 className="text-lg font-semibold mb-2">My Recent Bets</h2>
-            <p className="text-gray-500">You haven't placed any bets yet.</p>
+            <p className="text-gray-500">You have not placed any bets yet.</p>
             <Link href="/protected/bets" className="text-red-600 hover:underline text-sm mt-2 inline-block">
               Place a Bet
             </Link>
