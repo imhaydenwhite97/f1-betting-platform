@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -22,18 +22,43 @@ export default function AuthPage() {
     setLoading(true);
 
     try {
-      // This is a placeholder for actual authentication
-      // In a real app, you would call your Supabase auth methods here
-      
-      setTimeout(() => {
-        // Simulate successful auth
-        router.push('/');
-        setLoading(false);
-      }, 1500);
-      
-    } catch (err) {
-      setError('An unexpected error occurred');
+      if (isSignUp) {
+        // Sign up with Supabase
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              username,
+              full_name: username, // Using username as full_name for now
+            }
+          }
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        // Redirect to dashboard or show confirmation message
+        router.push('/protected/dashboard');
+      } else {
+        // Sign in with Supabase
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        // Redirect to dashboard
+        router.push('/protected/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'An unexpected error occurred');
       console.error(err);
+    } finally {
       setLoading(false);
     }
   };
